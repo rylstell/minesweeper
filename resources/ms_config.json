@@ -1,0 +1,25 @@
+{
+    "fps": 24,
+    "diffs": [
+        {
+            "num_rows": 8,
+            "num_cols": 8,
+            "num_mines": 10
+        },
+        {
+            "num_rows": 16,
+            "num_cols": 16,
+            "num_mines": 42
+        },
+        {
+            "num_rows": 16,
+            "num_cols": 32,
+            "num_mines": 100
+        },
+        {
+            "num_rows": 10,
+            "num_cols": 15,
+            "num_mines": 25
+        }
+    ]
+}
