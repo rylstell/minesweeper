@@ -653,22 +653,25 @@ class MsApp(App):
         self.set_scene("game")
 
     def btn_scores_clicked(self):
-        response = requests.get("http://api.ryanstella.me/minesweeper/high-score")
-        scores = response.json()
-        diffs = {"easy": [], "medium": [], "hard": []}
-        for score in scores:
-            if score["diff"] == "custom": continue
-            diffs[score["diff"]].append((score["name"], score["score"]))
-        diffs["easy"].sort(key=lambda score: score[1])
-        diffs["medium"].sort(key=lambda score: score[1])
-        diffs["hard"].sort(key=lambda score: score[1])
-        easy_text = "\n".join([f"{name:{'.'}<12}{int(score)}" for name, score in diffs["easy"][:10]])
-        medium_text = "\n".join([f"{name:{'.'}<12}{int(score)}" for name, score in diffs["medium"][:10]])
-        hard_text = "\n".join([f"{name:{'.'}<12}{int(score)}" for name, score in diffs["hard"][:10]])
-        self.scene("scores").label_easy.set_text(easy_text)
-        self.scene("scores").label_medium.set_text(medium_text)
-        self.scene("scores").label_hard.set_text(hard_text)
-        self.set_scene("scores")
+        try:
+            response = requests.get("http://api.ryanstella.me/minesweeper/high-score")
+            scores = response.json()
+            diffs = {"easy": [], "medium": [], "hard": []}
+            for score in scores:
+                if score["diff"] == "custom": continue
+                diffs[score["diff"]].append((score["name"], score["score"]))
+            diffs["easy"].sort(key=lambda score: score[1])
+            diffs["medium"].sort(key=lambda score: score[1])
+            diffs["hard"].sort(key=lambda score: score[1])
+            easy_text = "\n".join([f"{name:{'.'}<12}{int(score)}" for name, score in diffs["easy"][:10]])
+            medium_text = "\n".join([f"{name:{'.'}<12}{int(score)}" for name, score in diffs["medium"][:10]])
+            hard_text = "\n".join([f"{name:{'.'}<12}{int(score)}" for name, score in diffs["hard"][:10]])
+            self.scene("scores").label_easy.set_text(easy_text)
+            self.scene("scores").label_medium.set_text(medium_text)
+            self.scene("scores").label_hard.set_text(hard_text)
+            self.set_scene("scores")
+        except:
+            pass
 
     def btn_set_custom_handler(self):
         config = self.scene("custom").get_config()
@@ -688,7 +691,10 @@ class MsApp(App):
         score = self.scene("game").timer.time
         diff = self.difficulty.name.lower()
         data = {"score": score, "name": name, "diff": diff}
-        requests.post("http://api.ryanstella.me/minesweeper/high-score", data=data)
+        try:
+            requests.post("http://api.ryanstella.me/minesweeper/high-score", data=data)
+        except:
+            pass
         self.scene("game").window_record_score.set_display(False)
 
     def valid_config(self, config):
